@@ -1,3 +1,4 @@
+import datetime
 import urllib2
 
 BASE_URL = "https://lists.csail.mit.edu/pipermail/csail-related/" 
@@ -6,17 +7,17 @@ MONTHS = ["January", "February", "March", "April", "May", "June", "July"
 
 def get_page_contents(num_months):
     # The first available archive is July 2004.
-    cur_month = 9 # TODO: Get this from time-date.
-    cur_year = 2014
+    cur_month_index = datetime.datetime.now().month - 1
+    cur_year = datetime.datetime.now().year
 
     lines = []
 
     for i in range(0, num_months):
-        # Hacky hard-coded stop at current year.
-        if cur_month == 6 and cur_year == 2004:
+        # Hacky hard-coded stop at first available archive month.
+        if cur_month_index == 6 and cur_year == 2004:
             break
 
-        archive_url = BASE_URL + str(cur_year) + "-" + MONTHS[cur_month] + \
+        archive_url = BASE_URL + str(cur_year) + "-" + MONTHS[cur_month_index] + \
             ".txt"
         print ("Fetching " + archive_url + "...")
         req = urllib2.Request(archive_url)
@@ -24,10 +25,10 @@ def get_page_contents(num_months):
         the_page = response.read()
         lines.extend(the_page.splitlines())
 
-        if cur_month == 0:
-            cur_month = 11
+        if cur_month_index == 0:
+            cur_month_index = 11
             cur_year = cur_year - 1
         else:
-            cur_month = cur_month - 1
+            cur_month_index = cur_month_index - 1
 
     return lines
