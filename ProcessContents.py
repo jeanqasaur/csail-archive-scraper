@@ -46,12 +46,14 @@ def process_contents(lines, email_of_interest):
                 backtrack_string = cur_line
                 header_lines = copy.deepcopy(HEADER_LINES)
                 inside_email_of_interest = False
-            # If not, then we should be
+            # Otherwise we're in the body of the email, so we should check
+            # whether we are inside an email of interest. If so, we accumulate
+            # this line.
             else:
                 if inside_email_of_interest:
                     cur_email_accum.append(cur_line)
 
-    # If we ended inside an email of interest
+    # If we ended inside an email of interest, collect that.
     if inside_email_of_interest:
         all_emails_accum.append('\n'.join(cur_email_accum))
 

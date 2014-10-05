@@ -17,8 +17,8 @@ def get_page_contents(num_months):
         if cur_month_index == 6 and cur_year == 2004:
             break
 
-        archive_url = BASE_URL + str(cur_year) + "-" + MONTHS[cur_month_index] + \
-            ".txt"
+        archive_url = BASE_URL + str(cur_year) + "-" + MONTHS[cur_month_index] \
+            + ".txt"
         print ("Fetching " + archive_url + "...")
         req = urllib2.Request(archive_url)
         response = urllib2.urlopen(req)
